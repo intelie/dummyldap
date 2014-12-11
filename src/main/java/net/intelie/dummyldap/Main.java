@@ -18,14 +18,18 @@ public class Main {
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
     public static void main(String... args) throws Exception {
-
         int port = 1389;
-        if (args.length >= 1)
+        String data = "ldapdata";
+        if (args.length >= 1 && !"-".equals(args[0]))
             port = Integer.parseInt(args[0]);
+        if (args.length >= 2 && !"-".equals(args[1]))
+            data = args[1];
+
+        LOG.info("Saving data at {}", data);
 
         boolean first = false;
 
-        File workingDirectory = new File("./ldapdata");
+        File workingDirectory = new File(data, "db");
         if (!workingDirectory.exists())
             first = true;
 
@@ -49,7 +53,7 @@ public class Main {
         server.start();
 
         if (first) {
-            File startup = new File("./startup.ldif");
+            File startup = new File(data, "startup.ldif");
             if (!startup.exists()) {
                 startup.getParentFile().mkdirs();
                 try (InputStream input = Main.class.getResourceAsStream("/test.ldif")) {
@@ -59,6 +63,7 @@ public class Main {
             LdifFileLoader ldif = new LdifFileLoader(directory.getAdminSession(), startup.getPath());
             ldif.execute();
         }
+
         LOG.info("*******************");
         LOG.info("ADMIN: uid=admin,ou=system (default pass: 'secret')");
         LOG.info("*******************");
