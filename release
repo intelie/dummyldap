@@ -1,0 +1,21 @@
+#!/bin/sh
+if [ $# -lt 2 ]; then
+    echo 'release <current> <next>'
+    echo 'release 1.0 1.1'
+    exit 0
+fi
+mvn clean package || exit 1
+ssh root@files.intelie.com exit || exit 1
+
+mvn versions:set -DnewVersion=$1
+git commit -am "release version $1"
+git tag $1
+
+mvn clean package || exit 1
+scp target/dummyldap*.sh root@files.intelie.com:/var/www/html/dummyldap || exit 1
+
+mvn versions:set -DnewVersion=$2-SNAPSHOT
+git commit -am "next version $2-SNAPSHOT"
+git push
+git push --tags
+
