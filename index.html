@@ -10,7 +10,7 @@ echo Using version $VERSION...
 
 FILE=https://files.intelie.com/dummyldap/dummyldap-$VERSION.sh
 echo Downloading $FILE
-curl -L $FILE -H "Pragma: no-cache" -k -3 > ldaprun
+curl -L $FILE -H "Pragma: no-cache" -k --progress-bar -3 > ldaprun
 chmod a+x ldaprun
 echo Execute ./ldaprun to start the server!
 exit 0
