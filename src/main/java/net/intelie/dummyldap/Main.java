@@ -25,7 +25,7 @@ public class Main {
         if (args.length >= 2 && !"-".equals(args[1]))
             data = args[1];
 
-        LOG.info("Saving data at {}", data);
+        LOG.info("Saving data at {}", new File(data).getAbsolutePath());
 
         boolean first = false;
 

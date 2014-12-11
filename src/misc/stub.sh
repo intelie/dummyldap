@@ -4,5 +4,5 @@
 # cat [your jar file] >> [this file]
 # then chmod +x [this file]
 # you can now exec [this file]
-cd `dirname $0`
-exec java -jar "$0" "$@"
+cd "`dirname $0`"
+exec java -jar "`basename $0`" "$@"
